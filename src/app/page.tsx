@@ -1,69 +1,74 @@
 import Image from "next/image";
+import { getMessageCount, getAllMessages } from "@/lib/data";
 
 export default function Home() {
+  const msgCount = getMessageCount();
+  const recentMessages = getAllMessages().slice(0, 4);
+
+  // Calculate D-Day for the view
+  const enlistDate = new Date('2026-08-22');
+  const dischargeDate = new Date('2028-02-21');
+  const today = new Date();
+  const remain = Math.max(0, Math.ceil((dischargeDate.getTime() - today.getTime()) / (1000 * 60 * 60 * 24)));
+
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert h-5 w-[100px]"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the{" "}
-            <code className="rounded bg-black/[.06] px-1.5 py-0.5 font-mono text-[0.9em] dark:bg-white/[.08]">
-              page.tsx
-            </code>{" "}
-            file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
+    <div>
+      {/* Updated News */}
+      <div style={{ display: 'flex', borderTop: '1px solid #ccc', paddingTop: '10px', marginBottom: '15px' }}>
+        <div style={{ flex: 1 }}>
+          <div style={{ color: 'var(--cyworld-blue)', fontWeight: 'bold', fontSize: '12px', marginBottom: '5px' }}>Updated news</div>
+          <div style={{ fontSize: '11px', color: '#333', lineHeight: '1.6' }}>
+            · 무사히 훈련소 수료 완료!<br />
+            · 롤링페이퍼에 <span style={{ color: '#e74c3c' }}>{msgCount}개</span>의 메시지 도착<br />
+            · 전역까지 D-{remain}일<br />
+            · 눈 내리는 부대 풍경...
+          </div>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert h-[14px] w-4"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={14}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+        <div style={{ flex: 1, borderLeft: '1px dashed #ccc', paddingLeft: '10px' }}>
+          <div style={{ fontSize: '11px', color: '#333', display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '3px' }}>
+            <div>다이어리 <span style={{ color: 'red' }}>0</span>/<span style={{ color: '#777' }}>42</span></div>
+            <div>쥬크박스 <span style={{ color: 'red' }}>0</span>/<span style={{ color: '#777' }}>12</span></div>
+            <div>사진첩 <span style={{ color: 'red' }}>0</span>/<span style={{ color: '#777' }}>108</span></div>
+            <div>게시판 <span style={{ color: 'red' }}>0</span>/<span style={{ color: '#777' }}>5</span></div>
+            <div>방명록 <span style={{ color: 'red' }}>0</span>/<span style={{ color: '#777' }}>{msgCount}</span></div>
+          </div>
         </div>
-      </main>
+      </div>
+
+      {/* Mini Room */}
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', marginBottom: '5px' }}>
+        <span style={{ color: 'var(--cyworld-blue)', fontWeight: 'bold', fontSize: '12px' }}>Mini Room</span>
+        <span style={{ fontSize: '11px', color: 'var(--cyworld-blue)' }}>Cyworld 5th</span>
+      </div>
+      <div style={{ border: '1px solid #ccc', padding: '3px', background: '#fff', marginBottom: '15px' }}>
+        <div style={{ position: 'relative', width: '100%', height: '240px', backgroundColor: '#f0f8fc', borderRadius: '10px', overflow: 'hidden' }}>
+          <Image 
+            src="/miniroom.png" 
+            alt="미니룸"
+            fill
+            style={{ objectFit: 'cover' }}
+            unoptimized
+          />
+        </div>
+      </div>
+      
+      {/* 일촌평 스타일 미리보기 */}
+      <div style={{ color: 'var(--cyworld-blue)', fontWeight: 'bold', fontSize: '12px', marginBottom: '5px' }}>What friends say</div>
+      
+      {recentMessages.length === 0 ? (
+        <div style={{ fontSize: '11px', color: '#777' }}>아직 일촌평이 없습니다.</div>
+      ) : (
+        recentMessages.map((msg) => {
+          let content = msg.content.replace(/\n/g, " ");
+          const display = content.length > 40 ? content.slice(0, 40) + "..." : content;
+          return (
+            <div key={msg.id} style={{ fontSize: '11px', padding: '3px 0', borderBottom: '1px dashed #eee' }}>
+              <span style={{ color: '#333' }}>{display}</span>
+              <span style={{ color: 'var(--cyworld-blue)', marginLeft: '5px' }}>- {msg.author}</span>
+            </div>
+          );
+        })
+      )}
     </div>
   );
 }

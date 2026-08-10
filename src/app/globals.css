@@ -1,26 +1,202 @@
-@import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@400;700;800&family=DotGothic16&display=swap');
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --cyworld-bg: #99c6d3;
+  --cyworld-blue: #095c73;
+  --cyworld-tab-bg: #2b829c;
+  --cyworld-border: #8daec2;
+  --cyworld-dashed: #6cb3c6;
+  --gray-bg: #f8f8f8;
+  --gray-border: #cccccc;
+  --text-main: #333333;
+  --text-light: #777777;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background-color: var(--cyworld-bg);
+  background-image: radial-gradient(#ffffff 1px, transparent 1px);
+  background-size: 10px 10px;
+  font-family: 'DotGothic16', sans-serif;
+  color: var(--text-main);
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Base Cyworld Frame */
+.cyworld-container {
+  display: flex;
+  width: 840px;
+  max-width: 100%;
+  height: 600px;
+  position: relative;
+}
+
+/* ━━━ Left Page (Profile) ━━━ */
+.cyworld-left {
+  background-color: #ffffff;
+  border: 2px solid var(--cyworld-border);
+  border-radius: 15px 0 0 15px;
+  border-right: 1px dashed var(--gray-border);
+  width: 260px;
+  height: 100%;
+  padding: 20px 10px;
+  box-shadow: -3px 3px 10px rgba(0,0,0,0.1);
+  position: relative;
+  z-index: 2;
+}
+.cyworld-left::before {
+  content: '';
+  position: absolute;
+  top: 5px; bottom: 5px; left: 5px; right: 2px;
+  border: 2px dashed var(--cyworld-dashed);
+  border-radius: 12px 0 0 12px;
+  border-right: none;
+  pointer-events: none;
+}
+
+/* ━━━ Right Page (Content) ━━━ */
+.cyworld-right {
+  background-color: #ffffff;
+  border: 2px solid var(--cyworld-border);
+  border-radius: 0 15px 15px 0;
+  border-left: none;
+  flex: 1;
+  height: 100%;
+  padding: 20px 15px 20px 25px;
+  box-shadow: 3px 3px 10px rgba(0,0,0,0.1);
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+}
+.cyworld-right::before {
+  content: '';
+  position: absolute;
+  top: 5px; bottom: 5px; left: 0px; right: 5px;
+  border: 2px dashed var(--cyworld-dashed);
+  border-radius: 0 12px 12px 0;
+  border-left: none;
+  pointer-events: none;
+}
+/* Binder Rings */
+.cyworld-right::after {
+  content: '';
+  position: absolute;
+  top: 50px; bottom: 50px; left: -10px; width: 20px;
+  background-image: radial-gradient(circle at 10px 10px, var(--gray-border) 6px, transparent 7px);
+  background-size: 20px 40px;
+  background-repeat: repeat-y;
+  z-index: 10;
+  filter: drop-shadow(1px 1px 1px rgba(0,0,0,0.3));
+  pointer-events: none;
+}
+
+/* ━━━ Right Tabs ━━━ */
+.cyworld-tabs {
+  width: 70px;
+  padding-top: 60px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  z-index: 0;
+}
+.cyworld-tab {
+  background-color: var(--cyworld-tab-bg);
+  color: white;
+  border: 1px solid #1a5e73;
+  border-left: none;
+  border-radius: 0 7px 7px 0;
+  font-family: 'DotGothic16', sans-serif;
+  font-size: 14px;
+  padding: 12px 5px;
+  width: 60px;
+  text-align: center;
+  box-shadow: 2px 2px 3px rgba(0,0,0,0.1);
+  cursor: pointer;
+  text-decoration: none;
+}
+.cyworld-tab.active {
+  background-color: #ffffff;
+  color: var(--text-main);
+  font-weight: bold;
+  border-left: 2px solid #ffffff;
+  margin-left: -2px;
+  width: 62px;
+  z-index: 10;
+  position: relative;
+}
+
+/* ━━━ Right Sidebar Widget ━━━ */
+.cyworld-sidebar {
+  width: 210px;
+  padding-left: 10px;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Inner Content Styles */
+.content-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: 15px;
+  margin-top: 5px;
+  position: relative;
+  z-index: 5;
+}
+.content-title {
+  font-size: 18px;
+  font-weight: bold;
+  color: var(--cyworld-blue);
+}
+.content-url {
+  font-size: 11px;
+  color: var(--text-light);
+}
+.content-body {
+  position: relative;
+  z-index: 5;
+  flex: 1;
+  overflow-y: auto;
+  padding-right: 10px; /* scrollbar space */
+}
+.content-body::-webkit-scrollbar {
+  width: 6px;
+}
+.content-body::-webkit-scrollbar-track {
+  background: #f1f1f1; 
+}
+.content-body::-webkit-scrollbar-thumb {
+  background: var(--cyworld-border); 
+}
+
+/* Common UI Elements */
+.box {
+  border: 1px solid var(--gray-border);
+  background: #fff;
+}
+.btn {
+  background: var(--gray-bg);
+  border: 1px solid var(--gray-border);
+  color: var(--text-main);
+  font-family: 'DotGothic16', sans-serif;
+  padding: 4px 12px;
+  cursor: pointer;
+}
+.btn:hover {
+  background: #e0e0e0;
+}
+.input, .textarea {
+  border: 1px solid var(--gray-border);
+  font-family: 'DotGothic16', sans-serif;
+  padding: 5px;
+  width: 100%;
 }
