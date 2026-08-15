@@ -1,15 +1,28 @@
 import Image from "next/image";
-import { getMessageCount, getAllMessages } from "@/lib/data";
+import Link from "next/link";
+import { getMessageCount, getAllMessages, getBulletinCount } from "@/lib/data";
+import fs from "fs";
+import path from "path";
 
 export default function Home() {
   const msgCount = getMessageCount();
+  const bulletinCount = getBulletinCount();
   const recentMessages = getAllMessages().slice(0, 4);
+  let photosCount = 0;
+  try {
+    photosCount = fs.readdirSync(path.join(process.cwd(), 'public/photos')).length;
+  } catch(e) {}
 
-  // Calculate D-Day for the view
-  const enlistDate = new Date('2026-08-22');
-  const dischargeDate = new Date('2028-02-21');
+  const enlistDate = new Date('2026-08-24');
+  const dischargeDate = new Date('2028-03-31');
   const today = new Date();
-  const remain = Math.max(0, Math.ceil((dischargeDate.getTime() - today.getTime()) / (1000 * 60 * 60 * 24)));
+  
+  const distanceEnlist = enlistDate.getTime() - today.getTime();
+  const isBeforeEnlist = distanceEnlist > 0;
+  
+  const ddayText = isBeforeEnlist 
+    ? `입대까지 D-${Math.ceil(distanceEnlist / (1000 * 60 * 60 * 24))}일`
+    : `전역까지 D-${Math.max(0, Math.ceil((dischargeDate.getTime() - today.getTime()) / (1000 * 60 * 60 * 24)))}일`;
 
   return (
     <div>
@@ -18,18 +31,16 @@ export default function Home() {
         <div style={{ flex: 1 }}>
           <div style={{ color: 'var(--cyworld-blue)', fontWeight: 'bold', fontSize: '12px', marginBottom: '5px' }}>Updated news</div>
           <div style={{ fontSize: '11px', color: '#333', lineHeight: '1.6' }}>
-            · 무사히 훈련소 수료 완료!<br />
-            · 롤링페이퍼에 <span style={{ color: '#e74c3c' }}>{msgCount}개</span>의 메시지 도착<br />
-            · 전역까지 D-{remain}일<br />
-            · 눈 내리는 부대 풍경...
+            · <Link href="/board" style={{ textDecoration: 'none', color: '#333' }}>롤링페이퍼에 <span style={{ color: '#e74c3c' }}>{msgCount}개</span>의 메시지 도착</Link><br />
+            · {ddayText}<br />
           </div>
         </div>
         <div style={{ flex: 1, borderLeft: '1px dashed #ccc', paddingLeft: '10px' }}>
           <div style={{ fontSize: '11px', color: '#333', display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '3px' }}>
-            <div>다이어리 <span style={{ color: 'red' }}>0</span>/<span style={{ color: '#777' }}>42</span></div>
-            <div>쥬크박스 <span style={{ color: 'red' }}>0</span>/<span style={{ color: '#777' }}>12</span></div>
-            <div>사진첩 <span style={{ color: 'red' }}>0</span>/<span style={{ color: '#777' }}>108</span></div>
-            <div>게시판 <span style={{ color: 'red' }}>0</span>/<span style={{ color: '#777' }}>5</span></div>
+            <div>다이어리 <span style={{ color: 'red' }}>0</span>/<span style={{ color: '#777' }}>0</span></div>
+            <div>쥬크박스 <span style={{ color: 'red' }}>0</span>/<span style={{ color: '#777' }}>0</span></div>
+            <div>사진첩 <span style={{ color: 'red' }}>0</span>/<span style={{ color: '#777' }}>{photosCount}</span></div>
+            <div>게시판 <span style={{ color: 'red' }}>0</span>/<span style={{ color: '#777' }}>{bulletinCount}</span></div>
             <div>방명록 <span style={{ color: 'red' }}>0</span>/<span style={{ color: '#777' }}>{msgCount}</span></div>
           </div>
         </div>

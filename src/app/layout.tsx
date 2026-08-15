@@ -50,14 +50,17 @@ export default function RootLayout({
 
             <div style={{ padding: '15px 15px 0', fontSize: '11px', color: '#555' }}>
               <div style={{ fontWeight: 'bold', color: 'var(--cyworld-blue)', marginBottom: '5px' }}>▶ HISTORY</div>
-              <div>싸이월드 ⓟ <span style={{ color: 'var(--cyworld-blue)' }}>2026.08.04</span></div>
+              <div>싸이월드 ⓟ <span style={{ color: 'var(--cyworld-blue)' }}>2026.08.24</span></div>
             </div>
 
-            <div style={{ marginTop: '20px', padding: '0 15px' }}>
+            <div style={{ position: 'absolute', bottom: '20px', left: '15px', right: '15px' }}>
               <select style={{ width: '100%', padding: '3px', fontFamily: "'DotGothic16', sans-serif", fontSize: '11px', border: '1px solid #ccc' }}>
                 <option>★ 일촌 파도타기</option>
-                <option>동기들</option>
-                <option>가족</option>
+                <option>김고은</option>
+                <option>김동후</option>
+                <option>김민우</option>
+                <option>김유정</option>
+                <option>황영종</option>
               </select>
             </div>
           </div>
@@ -68,7 +71,7 @@ export default function RootLayout({
               <span className="content-title">진도현님의 미니홈피</span>
               <span className="content-url">http://www.cyworld.com/jindohyeon</span>
             </div>
-            
+
             <div className="content-body">
               {children}
             </div>

@@ -2,6 +2,7 @@ import fs from 'fs';
 import path from 'path';
 
 const dataPath = path.resolve(process.cwd(), 'messages.json');
+const bulletinPath = path.resolve(process.cwd(), 'bulletin.json');
 
 export interface Message {
   id: number;
@@ -48,4 +49,27 @@ export function addMessage(author: string, content: string, color: string) {
   } catch (error) {
     console.error("Error writing to messages.json", error);
   }
+}
+
+export interface BulletinPost {
+  id: number;
+  author: string;
+  title: string;
+  date: string;
+  content: string;
+}
+
+export function getAllBulletinPosts(): BulletinPost[] {
+  try {
+    if (!fs.existsSync(bulletinPath)) return [];
+    const data = fs.readFileSync(bulletinPath, 'utf-8');
+    return JSON.parse(data) as BulletinPost[];
+  } catch (error) {
+    console.error("Error reading bulletin.json", error);
+    return [];
+  }
+}
+
+export function getBulletinCount(): number {
+  return getAllBulletinPosts().length;
 }
